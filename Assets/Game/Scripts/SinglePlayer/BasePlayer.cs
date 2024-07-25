@@ -38,6 +38,9 @@ public abstract class BasePlayer : MonoBehaviour, IAnimateable, IControlable
     [SerializeField] protected int _hp;
     [SerializeField] protected BoxCollider2D _boxDeadCollider2D;
 
+    [Header("Sound Effects")]
+    [SerializeField] public AudioClip[] _audioClips;
+
     #endregion
 
     #region FIELDS
@@ -46,6 +49,8 @@ public abstract class BasePlayer : MonoBehaviour, IAnimateable, IControlable
     protected SpriteRenderer _spriteRenderer;
     protected AnimationController _animationController;
     protected BoxCollider2D[] _colliders;
+    protected AudioSource _audioSource;
+    protected SoundPlayerManager _soundPlayerManager;
 
     protected float _direction; // NEED TO INITIALIZATION (Joystick or Input) 
     protected float _speedModificator;
@@ -55,6 +60,7 @@ public abstract class BasePlayer : MonoBehaviour, IAnimateable, IControlable
     protected bool _isOnEnemy;
     protected bool _pressShoot;
     protected bool _isDead;
+    protected bool _play;
 
     #endregion
 
@@ -79,6 +85,7 @@ public abstract class BasePlayer : MonoBehaviour, IAnimateable, IControlable
     #region PROPERTIES
 
     public int Hp => _hp;
+    public AudioSource AudioSource { get => _audioSource;}
 
     #endregion
 
@@ -220,5 +227,18 @@ public abstract class BasePlayer : MonoBehaviour, IAnimateable, IControlable
         IsRun = _isGrounded && _rigidbody2D.velocity.y == 0 && _rigidbody2D.velocity.x > 1.5 || _rigidbody2D.velocity.x < -1.5;
         IsDead = _isDead;
 
+    }
+
+    public virtual IEnumerator SoundSetter()
+    {
+        if (!_play)
+        {
+            _play = true;
+            _soundPlayerManager.SoundStateMachine();
+
+            yield return new WaitForSeconds(0.5f);
+
+            _play = false;
+        }
     }
 }

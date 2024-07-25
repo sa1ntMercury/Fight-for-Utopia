@@ -37,6 +37,7 @@ public class MultiplayerPlayer : BasePlayer, IPunObservable
         _animationController = new AnimationController(this);
         _photonView = GetComponent<PhotonView>();
         _colliders = GetComponents<BoxCollider2D>();
+        _audioSource = GetComponent<AudioSource>();
 
         if (_photonView.Owner.IsLocal)
         {

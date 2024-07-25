@@ -22,6 +22,8 @@ public class SinglePlayer : BasePlayer
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _animationController = new AnimationController(this);
+        _soundPlayerManager = new SoundPlayerManager(this);
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -50,6 +52,8 @@ public class SinglePlayer : BasePlayer
         Jump();
 
         AnimationSetter();
+
+        StartCoroutine(SoundSetter());
 
         SpeedModificator();
 
